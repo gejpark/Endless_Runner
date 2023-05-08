@@ -21,14 +21,14 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        this.add.text(game.config.width/2, game.config.height/4 - borderUISize - borderPadding, 'ENDLESS_RUNNER', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/4 - borderUISize - borderPadding, 'Press Right Key to Play', menuConfig).setOrigin(0.5);
 
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         KEY_RIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+        if (Phaser.Input.Keyboard.JustDown(KEY_RIGHT)) {
             this.scene.start('playScene');
         }
     }
