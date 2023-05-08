@@ -5,6 +5,7 @@ Organization (15 points)
 Submit a link to your GitHub repository that shows a history of multiple meaningful commits with descriptive messages (5)
 Submit a playable link on GitHub pages (5)
 In main.js (or equivalent), include a comment header with your name, game title, approximate hours spent on project, and your creative tilt justification (see below) (5)
+
 Structure and Design (75 points)
 Your game should:
 
