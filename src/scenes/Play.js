@@ -9,37 +9,42 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
             fragShader: `
             precision mediump float;            //accuracy
             uniform float time;                 //time delta
-            float grid(vec2 uv, float battery)
-            {
+            float grid(vec2 uv, float battery) {
                 vec2 size = vec2(uv.y, uv.y * uv.y * 0.2) * 0.01;
-                uv += vec2(0.0, time * 4.0 * (battery + 0.05));
+                // uv += vec2(0.0, time * 4.0 * (battery + 0.05));
+                uv += vec2(0.0, time * 4.0 );                                       //set speed of grid movement
                 uv = abs(fract(uv) - 0.5);
-                vec2 lines = smoothstep(size, vec2(0.0), uv);
-                lines += smoothstep(size * 5.0, vec2(0.0), uv) * 0.4 * battery;
-                return clamp(lines.x + lines.y, 0.0, 3.0);
+                vec2 lines = smoothstep(size, vec2(0.0), uv);                       //draw lines
+                lines += smoothstep(size * 5.0, vec2(0.0), uv) * 0.4 * battery;     //draw a smooth line from 0,0 to end of uv
+                return clamp(lines.x + lines.y, 0.0, 3.0);                          //return gridval???
             }
 
             void main( )
             {
                 vec2 resolution = vec2(640,480);
-                vec2 uv = (2.0 * gl_FragCoord.xy - resolution.xy)/resolution.y;
-                float battery = 1.0;
+                vec2 uv = (2.0 * gl_FragCoord.xy - resolution.xy)/resolution.y;     //?not sure what this is?
+                float battery = 0.1;                                                //affects speed of scroll
                 {
                     // Grid
-                    float fog = smoothstep(0.1, -0.02, abs(uv.y + 0.2));
-                    vec3 col = vec3(0.0, 0.1, 0.2);
-                    if (uv.y < -0.2)
-                    {
+                    // float fog = smoothstep(0.1, -0.02, abs(uv.y + 0.2));         //add fog if needed
+                    // vec3 col = vec3(0.0, 0.1, 0.2);                                 //color to add (to gl_FragColor)
+                    vec3 col = vec3(1.0, 1.0, 1.0);
+                    if (uv.y < -0.2) {
                         uv.y = 3.0 / (abs(uv.y + 0.2) + 0.05);
                         uv.x *= uv.y * 1.0;
                         float gridVal = grid(uv, battery);
-                        col = mix(col, vec3(1.0, 0.5, 1.0), gridVal);
+                        // col = mix(col, vec3(1.0, 0.5, 1.0), gridVal);
+                        col = mix(col, vec3(0.0, 0.0, 0.0), gridVal);
                     }
 
-                    col += fog * fog * fog;
-                    col = mix(vec3(col.r, col.r, col.r) * 0.5, col, battery * 0.7);
+                    // col += fog * fog * fog;
+                    // col = mix(vec3(col.r, col.r, col.r) * 0.5, col, battery * 0.7);
 
-                    gl_FragColor = vec4(col,1.0);
+                    if (col.x > 0.30) {
+                        gl_FragColor = vec4(col,0.0);    
+                    } else {
+                        gl_FragColor = vec4(col,1.0);
+                    }
                 }
 
                 
@@ -90,8 +95,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.test =  new GrayScalePipeline(this.game);
-        var grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
+        this.test = new GrayScalePipeline(this.game);
+        // var grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
+        const  grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
         // this.background1 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0).setPipeline(grayscalePipeline);    //All background sprites are used for parallax scrolling effect.
         // this.background1 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0);
         this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0).setPipeline(grayscalePipeline);
@@ -102,14 +108,10 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        var grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
+        // const grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
+        const grayscalePipeline = this.renderer.pipelines.get('Gray');
         grayscalePipeline.gray = this.temp;
-        this.temp += 0.01 * this.multiplier;
-        // if (this.temp <= 0 || this.temp >= 1) {
-        //     this.multiplier *= -1;
-        // }
-        this.background1.tilePositionY -= 2;
-        // grayscalePipeline.gray = 1;
+        this.temp += 0.01;
         
     }
 }
