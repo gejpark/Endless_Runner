@@ -41,17 +41,15 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
                 vec2 dat = CycleGrid(uv , 12.0);  // get grid with 12 colour steps
                 vec3 col = vec3(dat.y,0.0,0.0);
                 // col.rgb += dat.x;              //white lines
-
                 // Output to screen
-
-                // vec4 textureCol = texture2D(ColorTexture, gl_FragCoord.xy);
-                // gl_FragColor = vec4(col, dat.y);
-                // gl_FragColor.rgb = mix(col, vec3(textureCol.r, textureCol.g, textureCol.b), 100.0);
-                
                 // gl_FragColor = vec4(col, 1.0);
 
                 //To just redraw background image:
-                gl_FragColor = texture2D(ColorTexture, vec2(gl_FragCoord.x, resolution.y - gl_FragCoord.y)/resolution);
+                // gl_FragColor = texture2D(ColorTexture, vec2(gl_FragCoord.x, resolution.y - gl_FragCoord.y)/resolution);
+                vec4 colTexture = texture2D(ColorTexture, vec2(gl_FragCoord.x, resolution.y - gl_FragCoord.y)/resolution);
+
+                gl_FragColor.rgb = mix(col.rgb, colTexture.rgb, 0.75);
+                gl_FragColor.a = 1.0;
             }
             `,
             uniforms: [
