@@ -39,17 +39,19 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
                 vec2 uv = (2.0*gl_FragCoord.xy-resolution.xy)/resolution.y;
 
                 vec2 dat = CycleGrid(uv , 12.0);  // get grid with 12 colour steps
-                vec3 col = vec3(dat.y,0.0,0.0);
+                // vec3 col = vec3(dat.y,0.0,0.0);
+                vec3 col = vec3(dat.y*0.5,dat.y,0.5);
                 // col.rgb += dat.x;              //white lines
                 // Output to screen
-                // gl_FragColor = vec4(col, 1.0);
+                gl_FragColor = vec4(col, 1.0);
 
                 //To just redraw background image:
                 // gl_FragColor = texture2D(ColorTexture, vec2(gl_FragCoord.x, resolution.y - gl_FragCoord.y)/resolution);
-                vec4 colTexture = texture2D(ColorTexture, vec2(gl_FragCoord.x, resolution.y - gl_FragCoord.y)/resolution);
 
-                gl_FragColor.rgb = mix(col.rgb, colTexture.rgb, 0.75);
-                gl_FragColor.a = 1.0;
+                // //Mix background and shader.
+                // vec4 colTexture = texture2D(ColorTexture, vec2(gl_FragCoord.x, resolution.y - gl_FragCoord.y)/resolution);
+                // gl_FragColor.rgb = mix(col.rgb, colTexture.rgb, 0.5);
+                // gl_FragColor.a = 1.0;
             }
             `,
             uniforms: [
@@ -99,22 +101,23 @@ class Play extends Phaser.Scene {
 
     create() {
         this.test = new GrayScalePipeline(this.game);
-        // var grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
         const  grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
         this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0);
         this.background1.setPipeline(grayscalePipeline);
+        
         // this.tile = this.add.image(0,0, 'scrolling_tile').setOrigin(0,0);
-        // this.tile.setPipeline(grayscalePipeline);
+        // this.background2 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0).setPipeline(grayscalePipeline);
+        // this.background2.setPipeline(grayscalePipeline);
+        
         this.temp = 0.5;
         this.multiplier = 1;
     }
 
     update() {
         const grayscalePipeline = this.renderer.pipelines.get('Gray');
-        // const mask = grayscalePipeline.createBitmapMask();
-        // this.background1.setMask(mask);
         grayscalePipeline.gray = this.temp;
         this.temp += 0.01;
         
+        // this.background2.tilePositionY -= 2;
     }
 }
