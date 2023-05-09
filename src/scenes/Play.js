@@ -7,8 +7,14 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
         super({
             game,
             fragShader: `
+            #ifdef GL_ES
             precision mediump float;            //accuracy
             uniform float time;                 //time delta
+            // Enable blending
+            // glEnable(gl.BLEND);
+            // gl.blendFunc(gl.SRC_COLOR, gl.DST_COLOR);
+            #endif
+
             float grid(vec2 uv, float battery) {
                 vec2 size = vec2(uv.y, uv.y * uv.y * 0.2) * 0.01;
                 // uv += vec2(0.0, time * 4.0 * (battery + 0.05));
@@ -21,6 +27,9 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
 
             void main( )
             {
+                // Enable blending
+                // glEnable(gl.BLEND);
+                //glblendFunc(gl.SRC_COLOR, gl.DST_COLOR);
                 vec2 resolution = vec2(640,480);
                 vec2 uv = (2.0 * gl_FragCoord.xy - resolution.xy)/resolution.y;     //?not sure what this is?
                 float battery = 0.1;                                                //affects speed of scroll
@@ -34,17 +43,19 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
                         uv.x *= uv.y * 1.0;
                         float gridVal = grid(uv, battery);
                         // col = mix(col, vec3(1.0, 0.5, 1.0), gridVal);
-                        col = mix(col, vec3(0.0, 0.0, 0.0), gridVal);
+                        col = mix(col, vec3(0.0, 0.0, 0.0), gridVal/3.0);
                     }
 
                     // col += fog * fog * fog;
                     // col = mix(vec3(col.r, col.r, col.r) * 0.5, col, battery * 0.7);
 
-                    if (col.x > 0.30) {
+                    if (col.r >= 0.80) {
                         gl_FragColor = vec4(col,0.0);    
                     } else {
                         gl_FragColor = vec4(col,1.0);
                     }
+                    // gl_FragColor = vec4(col,1.0);
+                    // gl_FragColor.a = 0.0;
                 }
 
                 
@@ -98,10 +109,8 @@ class Play extends Phaser.Scene {
         this.test = new GrayScalePipeline(this.game);
         // var grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
         const  grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
-        // this.background1 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0).setPipeline(grayscalePipeline);    //All background sprites are used for parallax scrolling effect.
-        // this.background1 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0);
-        this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0).setPipeline(grayscalePipeline);
-        // this.foreground1 = this.add.image(640/2, 480/2, 'scrolling_tile').setOrigin(0, 0);
+        // this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0).setPipeline(grayscalePipeline);
+        this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0);
         this.background1.setPipeline(grayscalePipeline);
         this.temp = 0.5;
         this.multiplier = 1;
