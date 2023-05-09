@@ -4,6 +4,8 @@
  * HOURS SPENT: ???
  * CREATIVE TILT JUSTIFICATION: ???
  */
+//CITATIONS:
+//Shader for Play scene background: https://www.shadertoy.com/view/dlt3zs
 
 // const contextCreationConfig = {
 //     alpha: false,
@@ -15,8 +17,6 @@
 //     failIfMajorPerformanceCaveat: false,
 //     powerPreference: 'default'
 // };
-
-//Shader for Play scene background: https://www.shadertoy.com/view/dlt3zs
 
 
 // const myCustomCanvas = document.createElement('canvas');
