@@ -16,9 +16,11 @@
 //     powerPreference: 'default'
 // };
 
+//Shader for Play scene background: https://www.shadertoy.com/view/dlt3zs
+
+
 // const myCustomCanvas = document.createElement('canvas');
 // const myCustomContext = myCustomCanvas.getContext('webgl2', contextCreationConfig);
-
 let config = {
     type: Phaser.WEBGL, //Phaser.CANVAS => webgl isn't pixel perfect when rendering for some reason
     width: 640,
