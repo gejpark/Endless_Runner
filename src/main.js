@@ -28,7 +28,7 @@ let config = {
     scene: [Menu, Play],
     // canvas: myCustomCanvas,
     // context: myCustomContext,
-    // transparent: true, //activate transparency
+    transparent: true, //activate transparency
 }
 let game = new Phaser.Game(config);
 // reserve keyboard vars
