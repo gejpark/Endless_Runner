@@ -6,7 +6,7 @@
  */
 
 let config = {
-    type: Phaser.AUTO, //Phaser.CANVAS => webgl isn't pixel perfect when rendering for some reason
+    type: Phaser.WEBGL, //Phaser.CANVAS => webgl isn't pixel perfect when rendering for some reason
     width: 640,
     height: 480,
     scene: [Menu, Play]
