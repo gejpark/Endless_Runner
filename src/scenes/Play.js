@@ -7,8 +7,8 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
         super({
             game,
             fragShader: `
-            precision mediump float;
-            uniform float time;
+            precision mediump float;            //accuracy
+            uniform float time;                 //time delta
             float grid(vec2 uv, float battery)
             {
                 vec2 size = vec2(uv.y, uv.y * uv.y * 0.2) * 0.01;
@@ -17,28 +17,6 @@ class GrayScalePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline
                 vec2 lines = smoothstep(size, vec2(0.0), uv);
                 lines += smoothstep(size * 5.0, vec2(0.0), uv) * 0.4 * battery;
                 return clamp(lines.x + lines.y, 0.0, 3.0);
-            }
-
-            float dot2(in vec2 v ) { return dot(v,v); }
-
-
-
-            float sdLine( in vec2 p, in vec2 a, in vec2 b )
-            {
-                vec2 pa = p-a, ba = b-a;
-                float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-                return length( pa - ba*h );
-            }
-
-            float sdBox( in vec2 p, in vec2 b )
-            {
-                vec2 d = abs(p)-b;
-                return length(max(d,vec2(0))) + min(max(d.x,d.y),0.0);
-            }
-
-            float opSmoothUnion(float d1, float d2, float k){
-                float h = clamp(0.5 + 0.5 * (d2 - d1) /k,0.0,1.0);
-                return mix(d2, d1 , h) - k * h * ( 1.0 - h);
             }
 
             void main( )
@@ -108,7 +86,7 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image('background', './assets/Sprites/background_sprite.png');
-        // this.load.image('scrolling_tile', './assets/Sprites/scrolling_tile.png');
+        this.load.image('scrolling_tile', './assets/Sprites/scrolling_tile.png');
     }
 
     create() {
@@ -116,7 +94,8 @@ class Play extends Phaser.Scene {
         var grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
         // this.background1 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0).setPipeline(grayscalePipeline);    //All background sprites are used for parallax scrolling effect.
         // this.background1 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0);
-        this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0).setOrigin(0, 0).setPipeline(grayscalePipeline);
+        this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0).setPipeline(grayscalePipeline);
+        // this.foreground1 = this.add.image(640/2, 480/2, 'scrolling_tile').setOrigin(0, 0);
         this.background1.setPipeline(grayscalePipeline);
         this.temp = 0.5;
         this.multiplier = 1;
