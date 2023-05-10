@@ -4,10 +4,34 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        //load menu background
+        this.load.image('menu_background', './assets/Sprites/background_sprite.png');
+
+        //load base image for spaceship revolving animation
+        this.load.image('spaceship_revolve_base', './assets/Sprites/spaceship_revolve_base.png');
+        //load revolving spaceship spritesheet
+        this.load.spritesheet('spaceship_revolve','./assets/Sprites/spaceship3-Sheet.png', {frameWidth: 90, frameHeight: 70, startFrame: 0, endFrame: 179});
 
     }
 
     create() {
+        //create spaceship revolving animation.
+        this.anims.create({
+            key: 'spaceship_revolve',
+            frames: this.anims.generateFrameNumbers('spaceship_revolve', {start: 0, end: 179, first: 0}),
+            frameRate: 15,
+            repeat: -1,
+        });
+
+        this.menu_background = this.add.sprite(0,0,'menu_background').setOrigin(0,0);
+
+        this.spaceship_revolve_base = this.add.sprite(0,0,'spaceship_revolve_base').setOrigin(0,0);
+        this.spaceship_revolve_base.x = (game.config.width - this.spaceship_revolve_base.width)/2;
+        this.spaceship_revolve_base.y = (game.config.height - this.spaceship_revolve_base.height)/2;
+        
+
+        this.spaceship_revolve_base.anims.play('spaceship_revolve', true);
+
         // menu text configuration
         let menuConfig = {
             fontFamily: 'Trebuchet MS',
