@@ -9,10 +9,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // this.setMaxVelocity(500, 5000);
         // this.setDrag(10);    // Constant drag. FIXME: Change this behavior?
         this.MAX_JUMPS = 1; // change for double/triple/etc. jumps
-        this.JUMP_VELOCITY = -800;
+        // this.JUMP_VELOCITY = -800;
         // scene.physics.world.gravity.y = 2600;
-        // this.setGravityY(2600);
+        // this.setGravityY(500);
         // this.setFlip(true, false);
+        this.jumped = false;
     }
 
     preload() {
@@ -51,6 +52,48 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.body.setVelocityX(0);
         }
+
+        if(!this.jumped) {
+            console.log("HERE");
+            if (KEY_SPACE.isDown) {
+                
+                this.body.setVelocityY(-this.VELOCITY);
+            }
+            if(this.y <= game.config.height/3) {
+                // this.body.setVelocityY(0);
+                this.jumped = true;
+            }
+        } else {
+            if (this.y <= game.config.height - this.height) {
+                this.body.setVelocityY(this.VELOCITY);
+            } else {
+                this.body.setVelocityY(0);
+                this.y = game.config.height - this.height * 1.1;
+                this.jumped = false;
+            }
+        }
+
+        // if (this.y >= game.config.height - this.height) {
+        //     this.y = game.config.height - this.height;
+        // }
+
+        // if (KEY_SPACE.isDown && !this.jumped) {
+        //     this.body.setVelocityY(-this.VELOCITY);
+        //     this.jumped = true;
+        // }
+
+        // console.log(this.y);
+        // if(this.y <= 0 && this.jumped) {
+        //     this.body.setVelocityY(0);
+        //     this.setGravityY(500);
+        //     this.jumped = false;
+        // }
+
+        // if (this.y >= game.config.height - this.height && !this.jumped) {
+        //     this.setGravityY(0);
+        //     this.body.setVelocityY(0);
+        //     this.y = game.config.height - this.height;
+        // }
 
         
     }
