@@ -13,7 +13,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // scene.physics.world.gravity.y = 2600;
         // this.setGravityY(500);
         // this.setFlip(true, false);
-        this.jumped = false;
+        this.jumpApex = false;  //at apex of jump?
+        this.jumping = false;   //is player in jumping state (collisions ignored when player jumping, only when touching down are collisions re-enabled.)
     }
 
     preload() {
@@ -53,15 +54,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.body.setVelocityX(0);
         }
 
-        if(!this.jumped) {
-            console.log("HERE");
+        if(!this.jumpApex) { //if not jumpApex
+            // console.log("HERE");
             if (KEY_SPACE.isDown) {
                 
                 this.body.setVelocityY(-this.VELOCITY);
+                this.jumping = true;
             }
-            if(this.y <= game.config.height/3) {
+            if(this.y <= game.config.height/3) {    //at apex of jump, set jumpApex = true.
                 // this.body.setVelocityY(0);
-                this.jumped = true;
+                this.jumpApex = true;
             }
         } else {
             if (this.y <= game.config.height - this.height) {
@@ -69,27 +71,32 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             } else {
                 this.body.setVelocityY(0);
                 this.y = game.config.height - this.height * 1.1;
-                this.jumped = false;
+                this.jumping = false;
+                this.jumpApex = false;
             }
         }
+
+        //scale size with the current y location, makes it look like the player is jumping towards the camera.
+        this.setScale((game.config.height - this.height)/this.y);
+        // this.setScale(this.y/(game.config.height - this.height));
 
         // if (this.y >= game.config.height - this.height) {
         //     this.y = game.config.height - this.height;
         // }
 
-        // if (KEY_SPACE.isDown && !this.jumped) {
+        // if (KEY_SPACE.isDown && !this.jumpApex) {
         //     this.body.setVelocityY(-this.VELOCITY);
-        //     this.jumped = true;
+        //     this.jumpApex = true;
         // }
 
         // console.log(this.y);
-        // if(this.y <= 0 && this.jumped) {
+        // if(this.y <= 0 && this.jumpApex) {
         //     this.body.setVelocityY(0);
         //     this.setGravityY(500);
-        //     this.jumped = false;
+        //     this.jumpApex = false;
         // }
 
-        // if (this.y >= game.config.height - this.height && !this.jumped) {
+        // if (this.y >= game.config.height - this.height && !this.jumpApex) {
         //     this.setGravityY(0);
         //     this.body.setVelocityY(0);
         //     this.y = game.config.height - this.height;
