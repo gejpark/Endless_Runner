@@ -77,7 +77,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         //scale size with the current y location, makes it look like the player is jumping towards the camera.
-        this.setScale((game.config.height - this.height)/this.y);
+        // this.setScale((game.config.height - this.height)/this.y);
         // this.setScale(this.y/(game.config.height - this.height));
 
         // if (this.y >= game.config.height - this.height) {

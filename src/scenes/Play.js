@@ -138,13 +138,18 @@ class Play extends Phaser.Scene {
         //get input
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         KEY_RIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        KEY_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP); //press up to speed up
         KEY_SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
+        var multiplier = 1; //when speeding up, makes shader play faster.
+        if(KEY_UP.isDown) {
+            multiplier = 4;
+        }
         const grayscalePipeline = this.renderer.pipelines.get('Gray');
         grayscalePipeline.gray = this.temp;
-        this.temp += 0.01;
+        this.temp += 0.01 * multiplier;
         
         this.player.update();
         // this.player.anims.play('spaceship_forward', true);
