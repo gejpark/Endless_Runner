@@ -97,6 +97,7 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.image('background', './assets/Sprites/background_sprite.png');
         this.load.image('scrolling_tile', './assets/Sprites/scrolling_tile.png');
+        this.load.spritesheet('spaceship_forward','./assets/Sprites/spaceship_forward.png', {frameWidth: 192, frameHeight: 160, startFrame: 0, endFrame: 2});
     }
 
     create() {
@@ -109,8 +110,17 @@ class Play extends Phaser.Scene {
         // this.background2 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0).setPipeline(grayscalePipeline);
         // this.background2.setPipeline(grayscalePipeline);
         
+        this.tile = this.add.sprite(0,0, 'scrolling_tile').setOrigin(0,0);
+
+
         this.temp = 0.5;
         this.multiplier = 1;
+        this.anims.create({
+            key: 'spaceship_forward',
+            frames: this.anims.generateFrameNumbers('spaceship_forward', {start: 0, end: 2, first: 0}),
+            frameRate: 15,
+            repeat: -1,
+        });
     }
 
     update() {
@@ -118,6 +128,9 @@ class Play extends Phaser.Scene {
         grayscalePipeline.gray = this.temp;
         this.temp += 0.01;
         
+        this.tile.anims.play('spaceship_forward', true);
+        // this.tile.on(Phaser.Animations.Events.ANIMATION_REPEAT, function () {
+        // }, this)
         // this.background2.tilePositionY -= 2;
     }
 }
