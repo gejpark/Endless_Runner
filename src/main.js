@@ -29,6 +29,17 @@ let config = {
     // canvas: myCustomCanvas,
     // context: myCustomContext,
     transparent: true, //activate transparency
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true, //turn off debug later. (set to false)
+            gravity: {
+                x: 0,
+                y: 0
+            }
+        }
+    },
+    fps: { forceSetTimeOut: true, target: 60 },
 }
 let game = new Phaser.Game(config);
 // reserve keyboard vars
