@@ -44,10 +44,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // console.log(this.width);
         // console.log(this.x);
 
-        if(KEY_LEFT.isDown && this.x >= 0) {
+        if(KEY_LEFT.isDown && this.x >= this.width/2) {
             // console.log("LEFT");
             this.body.setVelocityX(-this.VELOCITY);
-        } else if (KEY_RIGHT.isDown && this.x <= game.config.width - this.width) {
+        } else if (KEY_RIGHT.isDown && this.x <= game.config.width - this.width/2) {
             // console.log("RIGHT");
             this.body.setVelocityX(this.VELOCITY);
         } else {
@@ -66,18 +66,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.jumpApex = true;
             }
         } else {
-            if (this.y <= game.config.height - this.height) {
+            if (this.y <= game.config.height - this.height/2) {
                 this.body.setVelocityY(this.VELOCITY);
             } else {
                 this.body.setVelocityY(0);
-                this.y = game.config.height - this.height * 1.1;
+                this.y = game.config.height - this.height/2 * 1.1;
                 this.jumping = false;
                 this.jumpApex = false;
             }
         }
 
         //scale size with the current y location, makes it look like the player is jumping towards the camera.
-        // this.setScale((game.config.height - this.height)/this.y);
+        this.setScale((game.config.height - this.height)/this.y);
+        this.alpha = this.y/(game.config.height - this.height);
         // this.setScale(this.y/(game.config.height - this.height));
 
         // if (this.y >= game.config.height - this.height) {

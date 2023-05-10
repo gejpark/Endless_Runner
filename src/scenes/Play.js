@@ -133,7 +133,7 @@ class Play extends Phaser.Scene {
         // });
 
         //Instantiate player
-        this.player = new Player(this, 0, 0, 'player_base_sprite').setOrigin(0,0);
+        this.player = new Player(this, 0, 0, 'player_base_sprite').setOrigin(0.5,0.5);
         this.player.create();
         //get input
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
