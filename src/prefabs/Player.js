@@ -89,40 +89,33 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
-        // if (!this.jumping) {
-        //     this.y = game.config.height - this.height/2 * 1.1;
-        // }
-
         //scale size with the current y location, makes it look like the player is jumping towards the camera.
         // console.log(this.scale);
         // this.setScale((game.config.height - this.height)/this.y);
         // this.setScale(Math.min((game.config.height - this.height)/this.y),1);
-        this.alpha = this.y/(game.config.height - this.height);
-        // this.setScale(this.y/(game.config.height - this.height));
-
-        // if (this.y >= game.config.height - this.height) {
-        //     this.y = game.config.height - this.height;
-        // }
-
-        // if (KEY_SPACE.isDown && !this.jumpApex) {
-        //     this.body.setVelocityY(-this.VELOCITY);
-        //     this.jumpApex = true;
-        // }
-
-        // console.log(this.y);
-        // if(this.y <= 0 && this.jumpApex) {
-        //     this.body.setVelocityY(0);
-        //     this.setGravityY(500);
-        //     this.jumpApex = false;
-        // }
-
-        // if (this.y >= game.config.height - this.height && !this.jumpApex) {
-        //     this.setGravityY(0);
-        //     this.body.setVelocityY(0);
-        //     this.y = game.config.height - this.height;
-        // }
-
         
+        // this.alpha = this.y/(game.config.height - this.height);
+
+        // this.setScale(this.y/(game.config.height - this.height));   
+    }
+
+    detectOverlap(other) { //detects collision via hitbox overlap
+        if (this.active && other.active) {
+            this.scene.physics.add.overlap(other, this, () => {this.onCollision(other)}, null, this);
+        }
+    }
+
+    onCollision(other) {
+        if (this.active && other.active) {
+            if (other.alpha > 0.85) {
+                if (this.jumping && other.UP_OR_DOWN < 0) {
+                    other.destroy();
+                }
+                if (!this.jumping) {
+                    other.destroy();
+                }
+            }
+        }
     }
 
 

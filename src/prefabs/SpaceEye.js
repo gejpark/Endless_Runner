@@ -45,40 +45,26 @@ class SpaceEye extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    detectOverlap(other) { //detects collision via hitbox overlap, does not apply physics on each collider.
-        if (this.active && other.active) {
-            this.scene.physics.add.overlap(other, this, () => {this.onCollision(other)}, null, this);
-            // this.scene.physics.add.overlap(other, this);
-            // this.scene.physics.world.on('overlap', (this, other) => {
-            //     this.onCollision(other);
-            // });
-        }
-    }
+    // detectOverlap(other) { //detects collision via hitbox overlap, does not apply physics on each collider.
+    //     if (this.active && other.active) {
+    //         this.scene.physics.add.overlap(other, this, () => {this.onCollision(other)}, null, this);
+    //         // this.scene.physics.add.overlap(other, this);
+    //         // this.scene.physics.world.on('overlap', (this, other) => {
+    //         //     this.onCollision(other);
+    //         // });
+    //     }
+    // }
 
-    onCollision(other) {
-        if (this.active && other.active && !other.jumping) {
-            if (this.alpha > 0.85) { //alpha gets higher as enemy comes closer to foreground
-                this.destroy();
-            }
-        }
-        if (this.active && other.active && other.jumping && this.UP_OR_DOWN < 0) {
-            //console.log("collided");
-            if (this.alpha > 0.85) {
-                this.destroy();
-            }
-        }
-    }
-
-
-    // detectCollision(other) { //detects collision via physics
-    //     //other being player collider or attack
-    //     if (this.active && other.active) { //check if gameobject is active during collision.
-    //         console.log(other.jumping);
-    //         if (!other.jumping) {
-    //             this.scene.physics.add.collider(this, other, () => {
-    //                 // console.log("collided");
-    //                 this.selfDestroy();
-    //             });
+    // onCollision(other) {
+    //     if (this.active && other.active && !other.jumping) {
+    //         if (this.alpha > 0.85) { //alpha gets higher as enemy comes closer to foreground
+    //             this.destroy();
+    //         }
+    //     }
+    //     if (this.active && other.active && other.jumping && this.UP_OR_DOWN < 0) {
+    //         //console.log("collided");
+    //         if (this.alpha > 0.85) {
+    //             this.destroy();
     //         }
     //     }
     // }

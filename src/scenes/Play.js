@@ -168,7 +168,8 @@ class Play extends Phaser.Scene {
 
         this.distance_UI = this.add.text(game.config.width/2, 14+2.5, `DISTANCE: ${Math.round(this.temp)}`, menuConfig).setOrigin(0.5);
 
-        this.lives_UI = this.add.text(0, 0, 'LIVES', menuConfig).setOrigin(0.0);
+        this.lives = 3;
+        this.lives_UI = this.add.text(0, 0, `LIVES: ${this.lives}`, menuConfig).setOrigin(0.0);
 
         this.score_UI = this.add.text(120, 0, 'SCORE', menuConfig);
     }
@@ -186,10 +187,12 @@ class Play extends Phaser.Scene {
         
         this.player.update();
         this.enemy.movement(multiplier);
-        this.enemy.detectOverlap(this.player);
-        if(this.enemy.active == false) {
+        // this.enemy.detectOverlap(this.player);
+        this.player.detectOverlap(this.enemy); //detect collision from player to enemies.
+        if(this.enemy.active == false) { //if enemy active is false
             this.enemy = new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5);
         }
+
         // this.enemy.detectCollision(this.player);
         
         //for list of enemies
@@ -209,6 +212,8 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+
+        this.lives_UI.text = `LIVES: ${this.lives}`;
 
         if (this.temp > 50) {
             this.nextWave_UI.setVisible(true); //set visible
