@@ -108,7 +108,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('spaceship_side', './assets/Sprites/spaceship_side1.png', {frameWidth: 113, frameHeight: 85, startFrame: 0, endFrame: 2});
 
         //load enemy stuff
-        this.load.image('SpaceEye', './assets/Sprites/space_eye.png');
+        this.load.image('SpaceEye', './assets/Sprites/large_space_eye.png');
     }
 
     create() {
@@ -185,7 +185,7 @@ class Play extends Phaser.Scene {
         // this.temp += 0.05 * multiplier;
         
         this.player.update();
-        this.enemy.update();
+        this.enemy.movement(multiplier);
         this.enemy.detectOverlap(this.player);
         if(this.enemy.active == false) {
             this.enemy = new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5);
@@ -213,7 +213,7 @@ class Play extends Phaser.Scene {
         if (this.temp > 50) {
             this.nextWave_UI.setVisible(true); //set visible
             this.time.delayedCall(1000, () => { //after 1 second delay,  set invisible
-                console.log("HERE");
+                // console.log("HERE");
                 this.nextWave_UI.setVisible(false);
                 this.temp = 0;
                 }, null, this);
