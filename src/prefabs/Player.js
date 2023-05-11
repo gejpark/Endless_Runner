@@ -15,6 +15,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // this.setFlip(true, false);
         this.jumpApex = false;  //at apex of jump?
         this.jumping = false;   //is player in jumping state (collisions ignored when player jumping, only when touching down are collisions re-enabled.)
+        this.lives = 3; //set lives.
     }
 
     preload() {
@@ -109,9 +110,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.active && other.active) {
             if (other.alpha > 0.85) {
                 if (this.jumping && other.UP_OR_DOWN < 0) {
+                    this.lives -= 1;
                     other.destroy();
                 }
                 if (!this.jumping) {
+                    this.lives -= 1;
                     other.destroy();
                 }
             }

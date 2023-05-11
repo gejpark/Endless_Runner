@@ -140,7 +140,18 @@ class Play extends Phaser.Scene {
         this.player = new Player(this, 0, 0, 'player_base_sprite').setOrigin(0.5,0.5);
         this.player.create();
 
-        this.enemy = new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5);
+        //enemies
+        // this.enemy_list = [new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)];
+        this.enemy_list = [];
+
+        //enemy timer (NOT WORKING?)
+        // this.spawnTimer = this.time.addEvent({
+        //     delay: 500,
+        //     callback: callback,
+        //     loop: true,
+        // });
+        this.spawnTimer = 0;
+        
         //get input
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         KEY_RIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -185,15 +196,22 @@ class Play extends Phaser.Scene {
         grayscalePipeline.gray = this.temp;
         // this.temp += 0.05 * multiplier;
         
-        this.player.update();
-        this.enemy.movement(multiplier);
-        // this.enemy.detectOverlap(this.player);
-        this.player.detectOverlap(this.enemy); //detect collision from player to enemies.
-        if(this.enemy.active == false) { //if enemy active is false
-            this.enemy = new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5);
-        }
+        this.player.update(); //player update (controls movement)
 
-        // this.enemy.detectCollision(this.player);
+        //spawn enemies
+        this.spawnTimer += 1; //spawnTimer.
+        // console.log(this.spawnTimer);
+        if (this.spawnTimer > 100) { //every few time spawn
+            // this.enemy_list.push(new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
+            this.enemy_list.push(new SpaceEye(this, game.config.width * Math.random(), game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
+            this.spawnTimer = 0; //reset spawnTimer.
+        }
+        this.enemy_list = this.enemy_list.filter(enemy => enemy.active == true); //remove inactive enemies
+        this.enemy_list.forEach(enemy => {
+            enemy.movement(multiplier); //apply movement to enemy
+            this.player.detectOverlap(enemy); //detect collision from player to enemies. for each enemy
+        });
+        // console.log(this.enemy_list); 
         
         //for list of enemies
         //if element.active = false, remove that element
@@ -213,7 +231,10 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.lives_UI.text = `LIVES: ${this.lives}`;
+        this.lives_UI.text = `LIVES: ${this.player.lives}`;
+        if (this.player.lives < 0) {
+            this.scene.start('menuScene');
+        }
 
         if (this.temp > 50) {
             this.nextWave_UI.setVisible(true); //set visible
