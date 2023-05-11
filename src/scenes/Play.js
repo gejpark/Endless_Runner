@@ -166,7 +166,7 @@ class Play extends Phaser.Scene {
         this.nextWave_UI = this.add.text(game.config.width/2, game.config.height/2, 'NEXT WAVE', menuConfig).setOrigin(0.5);
         this.nextWave_UI.setVisible(false);
 
-        this.distance_UI = this.add.text(game.config.width/2, 14+2.5, `distance ${Math.round(this.temp)}`, menuConfig).setOrigin(0.5);
+        this.distance_UI = this.add.text(game.config.width/2, 14+2.5, `DISTANCE: ${Math.round(this.temp)}`, menuConfig).setOrigin(0.5);
 
         this.lives_UI = this.add.text(0, 0, 'LIVES', menuConfig).setOrigin(0.0);
 
@@ -219,7 +219,7 @@ class Play extends Phaser.Scene {
                 }, null, this);
         } else {
             this.temp += 0.05 * multiplier;
-            this.distance_UI.text = `distance ${Math.round(this.temp)}`;
+            this.distance_UI.text = `DISTANCE: ${Math.round(this.temp)}`;
         }
     }
 }

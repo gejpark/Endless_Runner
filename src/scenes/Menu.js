@@ -16,6 +16,8 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
+        this.selected = 0;
+
         //create spaceship revolving animation.
         this.anims.create({
             key: 'spaceship_revolve',
@@ -41,27 +43,55 @@ class Menu extends Phaser.Scene {
         this.spaceship_revolve_base.anims.play('spaceship_revolve', true);
 
         // menu text configuration
-        // let menuConfig = {
-        //     fontFamily: 'Trebuchet MS',
-        //     fontSize: '28px',
-        //     backgroundColor: '#816271',
-        //     color: '#c3a38a',
-        //     align: 'right',
-        //     padding: {
-        //         top: 5,
-        //         bottom: 5,
-        //     },
-        //     fixedWidth: 0
-        // }
-        // this.add.text(game.config.width/2, game.config.height/4 - borderUISize - borderPadding, 'Press Right Key to Play', menuConfig).setOrigin(0.5);
+        let menuConfig = {
+            fontFamily: 'Trebuchet MS',
+            fontSize: '14px',
+            // backgroundColor: '#816271',
+            color: '#c3a38a',
+            align: 'right',
+            // padding: {
+            //     top: 5,
+            //     bottom: 5,
+            // },
+            fixedWidth: 0
+        }
+        this.playButton = this.add.text(game.config.width/2, game.config.height - (14)*3 - 100 , 'PLAY', menuConfig).setOrigin(0.5, 0);
+        this.instructionButton = this.add.text(game.config.width/2, game.config.height - (14)*2 - 100, 'INSTRUCTIONS', menuConfig).setOrigin(0.5, 0);
 
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         KEY_RIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        KEY_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        KEY_DOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+        KEY_SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(KEY_RIGHT)) {
-            this.scene.start('playScene');
+        // if (Phaser.Input.Keyboard.JustDown(KEY_RIGHT)) {
+        //     this.scene.start('playScene');
+        // }
+        if(Phaser.Input.Keyboard.JustDown(KEY_DOWN)) {
+            this.selected += 1;
+            this.selected = this.selected % 2;
+        }
+        if(Phaser.Input.Keyboard.JustDown(KEY_UP)) {
+            if(this.selected == 0) {
+                this.selected = 1;
+            } else {
+                this.selected -= 1;
+            }
+            this.selected = this.selected % 2;
+        }
+
+        if(this.selected == 0) {
+            this.playButton.setBackgroundColor('#816271'); //fill in color for selected button
+            //deselect everything else.
+            this.instructionButton.setBackgroundColor('rgba(0,0,0,0)');
+            if (Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
+                this.scene.start('playScene');
+            }
+        } else if (this.selected == 1) {
+            this.instructionButton.setBackgroundColor('#816271');
+            this.playButton.setBackgroundColor('rgba(0,0,0,0)');
         }
     }
 }
