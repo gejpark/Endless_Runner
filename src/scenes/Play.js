@@ -187,8 +187,15 @@ class Play extends Phaser.Scene {
         this.player.update();
         this.enemy.update();
         this.enemy.detectOverlap(this.player);
+        if(this.enemy.active == false) {
+            this.enemy = new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5);
+        }
         // this.enemy.detectCollision(this.player);
         
+        //for list of enemies
+        //if element.active = false, remove that element
+        //else update it
+        //collision detection per element
 
         let menuConfig = {
             fontFamily: 'Trebuchet MS',

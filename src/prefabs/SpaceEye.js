@@ -20,6 +20,12 @@ class SpaceEye extends Phaser.Physics.Arcade.Sprite {
     update() {
         if (this.active) { //while active
             this.body.setVelocityY(this.VELOCITY);
+            // this.body.setVelocityX(-this.VELOCITY);
+            // this.setScale((game.config.height - this.height)/this.y);
+            this.setScale(this.y/(game.config.height - this.height));
+            if(this.x < -this.width || this.x > game.config.width + this.width || this.y > game.config.height + this.height) {
+                this.destroy();
+            }
         }
     }
 
@@ -40,18 +46,18 @@ class SpaceEye extends Phaser.Physics.Arcade.Sprite {
     }
 
 
-    detectCollision(other) { //detects collision via physics
-        //other being player collider or attack
-        if (this.active && other.active) { //check if gameobject is active during collision.
-            console.log(other.jumping);
-            if (!other.jumping) {
-                this.scene.physics.add.collider(this, other, () => {
-                    // console.log("collided");
-                    this.selfDestroy();
-                });
-            }
-        }
-    }
+    // detectCollision(other) { //detects collision via physics
+    //     //other being player collider or attack
+    //     if (this.active && other.active) { //check if gameobject is active during collision.
+    //         console.log(other.jumping);
+    //         if (!other.jumping) {
+    //             this.scene.physics.add.collider(this, other, () => {
+    //                 // console.log("collided");
+    //                 this.selfDestroy();
+    //             });
+    //         }
+    //     }
+    // }
 
     selfDestroy() { //destroy self
         this.destroy();
