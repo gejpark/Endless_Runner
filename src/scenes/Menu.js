@@ -41,18 +41,18 @@ class Menu extends Phaser.Scene {
         this.spaceship_revolve_base.anims.play('spaceship_revolve', true);
 
         // menu text configuration
-        let menuConfig = {
-            fontFamily: 'Trebuchet MS',
-            fontSize: '28px',
-            backgroundColor: '#816271',
-            color: '#c3a38a',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
+        // let menuConfig = {
+        //     fontFamily: 'Trebuchet MS',
+        //     fontSize: '28px',
+        //     backgroundColor: '#816271',
+        //     color: '#c3a38a',
+        //     align: 'right',
+        //     padding: {
+        //         top: 5,
+        //         bottom: 5,
+        //     },
+        //     fixedWidth: 0
+        // }
         // this.add.text(game.config.width/2, game.config.height/4 - borderUISize - borderPadding, 'Press Right Key to Play', menuConfig).setOrigin(0.5);
 
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);

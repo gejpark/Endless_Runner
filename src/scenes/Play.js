@@ -121,7 +121,7 @@ class Play extends Phaser.Scene {
         // this.tile = this.add.sprite(0,0, 'scrolling_tile').setOrigin(0,0);
 
 
-        this.temp = 0.5; //keep track of time for shading scrolling
+        this.temp = 0; //keep track of time for shading scrolling
         // this.multiplier = 1;
         
         
@@ -142,20 +142,68 @@ class Play extends Phaser.Scene {
         KEY_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP); //press up to speed up
         KEY_DOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN); //press down to speed down
         KEY_SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        let menuConfig = {
+            fontFamily: 'Trebuchet MS',
+            fontSize: '28px',
+            backgroundColor: '#816271',
+            color: '#c3a38a',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
+
+        //UI Elements
+        this.nextWave_UI = this.add.text(game.config.width/2, game.config.height/2, 'NEXT WAVE', menuConfig).setOrigin(0.5);
+        this.nextWave_UI.setVisible(false);
+
+        this.distance_UI = this.add.text(game.config.width/2, 14+2.5, `distance ${Math.round(this.temp)}`, menuConfig).setOrigin(0.5);
+
+        this.lives_UI = this.add.text(0, 0, 'LIVES', menuConfig).setOrigin(0.0);
+
+        this.score_UI = this.add.text(120, 0, 'SCORE', menuConfig);
     }
 
     update() {
         var multiplier = 1; //when speeding up, makes shader play faster.
         if(KEY_UP.isDown) {
-            multiplier = 2;
+            multiplier = 3;
         } else if (KEY_DOWN.isDown) {
-            multiplier = 0.5;
+            multiplier = 0.3;
         }
         const grayscalePipeline = this.renderer.pipelines.get('Gray');
         grayscalePipeline.gray = this.temp;
-        this.temp += 0.05 * multiplier;
+        // this.temp += 0.05 * multiplier;
         
         this.player.update();
-        // this.player.anims.play('spaceship_forward', true);
+
+        let menuConfig = {
+            fontFamily: 'Trebuchet MS',
+            fontSize: '28px',
+            backgroundColor: '#816271',
+            color: '#c3a38a',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
+        if (this.temp > 50) {
+            this.nextWave_UI.setVisible(true); //set visible
+            this.time.delayedCall(1000, () => { //after 1 second delay,  set invisible
+                console.log("HERE");
+                this.nextWave_UI.setVisible(false);
+                this.temp = 0;
+                }, null, this);
+        } else {
+            this.temp += 0.05 * multiplier;
+            this.distance_UI.text = `distance ${Math.round(this.temp)}`;
+        }
     }
 }
