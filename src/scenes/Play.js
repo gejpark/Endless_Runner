@@ -112,7 +112,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.test = new GrayScalePipeline(this.game);
+        if (!this.test) {
+            this.test = new GrayScalePipeline(this.game);
+        }
         const  grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
         this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0);
         this.background1.setPipeline(grayscalePipeline);

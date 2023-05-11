@@ -19,18 +19,22 @@ class Menu extends Phaser.Scene {
         this.selected = 0;
 
         //create spaceship revolving animation.
-        this.anims.create({
-            key: 'spaceship_revolve',
-            frames: this.anims.generateFrameNumbers('spaceship_revolve', {start: 0, end: 179, first: 0}),
-            frameRate: 15,
-            repeat: -1,
-        });
+        if (!this.anims.exists('spaceship_revolve')) { //check if animation already exists
+            this.anims.create({
+                key: 'spaceship_revolve',
+                frames: this.anims.generateFrameNumbers('spaceship_revolve', {start: 0, end: 179, first: 0}),
+                frameRate: 15,
+                repeat: -1,
+            });
+        }
 
-        this.anims.create({
-            key: 'menu_background_animated',
-            frames: this.anims.generateFrameNumbers('menu_background_animated', {start: 0, end: 5, first: 0}),
-            frameRate: 15,
-        })
+        if (!this.anims.exists('menu_background_animated')) {
+            this.anims.create({
+                key: 'menu_background_animated',
+                frames: this.anims.generateFrameNumbers('menu_background_animated', {start: 0, end: 5, first: 0}),
+                frameRate: 15,
+            });
+        }
 
         this.menu_background = this.add.sprite(0,0,'menu_background').setOrigin(0,0);
         this.menu_background.anims.play('menu_background_animated', true);
