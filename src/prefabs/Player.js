@@ -31,8 +31,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             repeat: -1,
         });
 
+        this.anims.create({
+            key: 'spaceship_side',
+            frames: this.anims.generateFrameNumbers('spaceship_side', {start: 0, end: 2, first: 0}),
+            frameRate: 15,
+            repeat: -1,
+        })
+
         //play that animation on player.
-        this.anims.play('spaceship_forward', true);
+        // this.anims.play('spaceship_forward', true);
+        // this.anims.play('spaceship_side', true);
 
 
         this.y = game.config.height - this.height;
@@ -47,10 +55,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(KEY_LEFT.isDown && this.x >= this.width/2) {
             // console.log("LEFT");
             this.body.setVelocityX(-this.VELOCITY);
+            this.resetFlip();
+            this.anims.play('spaceship_side', true);
         } else if (KEY_RIGHT.isDown && this.x <= game.config.width - this.width/2) {
             // console.log("RIGHT");
             this.body.setVelocityX(this.VELOCITY);
+            this.setFlip(true, false);
+            this.anims.play('spaceship_side', true);
         } else {
+            this.anims.play('spaceship_forward', true);
             this.body.setVelocityX(0);
         }
 
