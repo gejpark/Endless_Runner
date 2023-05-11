@@ -43,7 +43,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // this.anims.play('spaceship_side', true);
 
 
-        this.y = game.config.height - this.height;
+        this.y = game.config.height - this.height/2;
         this.x = game.config.width/2 - this.width/2;
 
     }
@@ -69,7 +69,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         if(!this.jumpApex) { //if not jumpApex
             // console.log("HERE");
-            if (KEY_SPACE.isDown) {
+            if (KEY_SPACE.isDown && !this.jumping) {
                 
                 this.body.setVelocityY(-this.VELOCITY);
                 this.jumping = true;
@@ -88,6 +88,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.jumpApex = false;
             }
         }
+
+        // if (!this.jumping) {
+        //     this.y = game.config.height - this.height/2 * 1.1;
+        // }
 
         //scale size with the current y location, makes it look like the player is jumping towards the camera.
         this.setScale((game.config.height - this.height)/this.y);

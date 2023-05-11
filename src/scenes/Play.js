@@ -106,6 +106,9 @@ class Play extends Phaser.Scene {
         this.load.image('player_base_sprite', './assets/Sprites/player_base_sprite.png');       //base sprite should have same dimesions as frameWidth + frameHeight
         this.load.spritesheet('spaceship_forward','./assets/Sprites/spaceship_forward1.png', {frameWidth: 96, frameHeight: 80, startFrame: 0, endFrame: 2});
         this.load.spritesheet('spaceship_side', './assets/Sprites/spaceship_side1.png', {frameWidth: 113, frameHeight: 85, startFrame: 0, endFrame: 2});
+
+        //load enemy stuff
+        this.load.image('SpaceEye', './assets/Sprites/space_eye.png');
     }
 
     create() {
@@ -136,6 +139,8 @@ class Play extends Phaser.Scene {
         //Instantiate player
         this.player = new Player(this, 0, 0, 'player_base_sprite').setOrigin(0.5,0.5);
         this.player.create();
+
+        this.enemy = new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5);
         //get input
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         KEY_RIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -180,6 +185,10 @@ class Play extends Phaser.Scene {
         // this.temp += 0.05 * multiplier;
         
         this.player.update();
+        this.enemy.update();
+        this.enemy.detectOverlap(this.player);
+        // this.enemy.detectCollision(this.player);
+        
 
         let menuConfig = {
             fontFamily: 'Trebuchet MS',
