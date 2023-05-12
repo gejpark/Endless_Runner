@@ -30,9 +30,18 @@ class Credits extends Phaser.Scene {
         this.add.text(game.config.width/2,this.intro.height * temp, `SOUND EFFECTS FROM SFXR: https://sfxr.me/`,menuConfig).setOrigin(0.5,0);
         temp += 1;
         this.add.text(game.config.width/2,this.intro.height * temp, `MUSIC FROM: https://pixabay.com/music/corporate-space-technologies-146694/`,menuConfig).setOrigin(0.5,0);
-        
-    
-        this.spaceship_revolve_base = this.add.sprite(game.config.width/2,game.config.height/2,'spaceship_revolve_base').setOrigin(0.5,0.5);
+        //Shader for Play scene background: https://www.shadertoy.com/view/dlt3zs
+        temp += 1;
+        this.add.text(game.config.width/2,this.intro.height * temp, `FRAGMENT SHADER CODE FROM: https://www.shadertoy.com/view/dlt3zs`,menuConfig).setOrigin(0.5,0);
+        // PICO-8 Color Palette: https://lospec.com/palette-list/pico-8
+        temp += 1;
+        this.add.text(game.config.width/2,this.intro.height * temp, `PICO-8 COLOR PALETTE: https://lospec.com/palette-list/pico-8`,menuConfig).setOrigin(0.5,0);
+        temp += 1;
+        this.add.text(game.config.width/2,this.intro.height * temp, `PICOCAD: https://johanpeitz.itch.io/picocad`,menuConfig).setOrigin(0.5,0);
+        temp += 1;
+        this.add.text(game.config.width/2,this.intro.height * temp, `ASEPRITE: https://www.aseprite.org/`,menuConfig).setOrigin(0.5,0);
+
+        this.spaceship_revolve_base = this.add.sprite(game.config.width/2,(game.config.height/4)*3,'spaceship_revolve_base').setOrigin(0.5,0.5);
         if (!this.anims.exists('spaceship_revolve')) { //check if animation already exists
             this.anims.create({
                 key: 'spaceship_revolve',
