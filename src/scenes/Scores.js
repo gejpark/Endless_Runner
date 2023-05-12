@@ -24,7 +24,7 @@ class Scores extends Phaser.Scene {
 
         //show scores
         this.score_list = [];
-        this.intro = this.add.text(game.config.width/2,0, `SCORES: (Press Z to return to Menu)`,menuConfig).setOrigin(0.5,0);
+        this.intro = this.add.text(game.config.width/2,0, `SCORES: (PRESS Z TO RETURN TO MENU)`,menuConfig).setOrigin(0.5,0);
         var temp = 1;
         SCORES.forEach(score => {
             this.add.text(0,this.intro.height * temp, `${temp}. ${score}`,menuConfig).setOrigin(0,0);

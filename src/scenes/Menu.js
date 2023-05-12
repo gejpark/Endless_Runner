@@ -23,7 +23,7 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        this.options = 3;
+        this.options = 4;
         this.selected = 0;
 
         //create spaceship revolving animation.
@@ -68,6 +68,7 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         
+        this.creditsButton = this.add.text(game.config.width/2, game.config.height - 100 , 'CREDITS', menuConfig).setOrigin(0.5, 0);
         this.scoresButton = this.add.text(game.config.width/2, game.config.height - (14) - 100, 'SCORES', menuConfig).setOrigin(0.5, 0);
         this.instructionButton = this.add.text(game.config.width/2, game.config.height - (14)*2 - 100, 'INSTRUCTIONS', menuConfig).setOrigin(0.5, 0);
         this.playButton = this.add.text(game.config.width/2, game.config.height - (14)*3 - 100 , 'PLAY', menuConfig).setOrigin(0.5, 0);
@@ -93,7 +94,7 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(KEY_UP)) {
             this.sound.play('sfx_select');
             if(this.selected == 0) {
-                this.selected = 2;
+                this.selected = 3;
             } else {
                 this.selected -= 1;
             }
@@ -104,14 +105,22 @@ class Menu extends Phaser.Scene {
             this.playButton.setBackgroundColor('#83769C'); //fill in color for selected button
             this.instructionButton.setBackgroundColor('rgba(0,0,0,0)'); //deselect everything else.
             this.scoresButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.creditsButton.setBackgroundColor('rgba(0,0,0,0)');
         } else if (this.selected == 1) {
             this.instructionButton.setBackgroundColor('#83769C');
             this.playButton.setBackgroundColor('rgba(0,0,0,0)');
             this.scoresButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.creditsButton.setBackgroundColor('rgba(0,0,0,0)');
         } else if (this.selected == 2) {
             this.instructionButton.setBackgroundColor('rgba(0,0,0,0)');
             this.playButton.setBackgroundColor('rgba(0,0,0,0)');
             this.scoresButton.setBackgroundColor('#83769C');
+            this.creditsButton.setBackgroundColor('rgba(0,0,0,0)');
+        } else if (this.selected == 3) {
+            this.instructionButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.playButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.scoresButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.creditsButton.setBackgroundColor('#83769C');
         }
         if (Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
             this.sound.play('sfx_select');
@@ -121,6 +130,8 @@ class Menu extends Phaser.Scene {
                 this.scene.start('instructionsScene');
             } else if (this.selected == 2) {
                 this.scene.start('scoresScene');
+            } else if (this.selected == 3) {
+                this.scene.start('creditsScene');
             }
         }
     }

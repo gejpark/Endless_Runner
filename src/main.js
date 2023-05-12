@@ -25,7 +25,7 @@ let config = {
     type: Phaser.WEBGL, //Phaser.CANVAS => webgl isn't pixel perfect when rendering for some reason
     width: 640,
     height: 480,
-    scene: [Menu, Play, Instructions, Scores],
+    scene: [Menu, Play, Instructions, Scores, Credits],
     // canvas: myCustomCanvas,
     // context: myCustomContext,
     transparent: true, //activate transparency
