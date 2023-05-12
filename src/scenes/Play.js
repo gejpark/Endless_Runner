@@ -118,40 +118,15 @@ class Play extends Phaser.Scene {
         const  grayscalePipeline = this.renderer.pipelines.add('Gray', this.test);
         this.background1 = this.add.image(0, 0, 'background').setOrigin(0, 0);
         this.background1.setPipeline(grayscalePipeline);
-        
-        // this.tile = this.add.image(0,0, 'scrolling_tile').setOrigin(0,0);
-        // this.background2 = this.add.tileSprite(0, 0, 640, 480, 'scrolling_tile').setOrigin(0, 0).setPipeline(grayscalePipeline);
-        // this.background2.setPipeline(grayscalePipeline);
-        
-        // this.tile = this.add.sprite(0,0, 'scrolling_tile').setOrigin(0,0);
 
-
-        this.temp = 0; //keep track of time for shading scrolling
-        // this.multiplier = 1;
-        
-        
-        
-        // this.anims.create({
-        //     key: 'spaceship_forward',
-        //     frames: this.anims.generateFrameNumbers('spaceship_forward', {start: 0, end: 2, first: 0}),
-        //     frameRate: 15,
-        //     repeat: -1,
-        // });
+        this.temp = 0; //keep track of time for shader scrolling
 
         //Instantiate player
         this.player = new Player(this, 0, 0, 'player_base_sprite').setOrigin(0.5,0.5);
         this.player.create();
 
         //enemies
-        // this.enemy_list = [new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)];
         this.enemy_list = [];
-
-        //enemy timer (NOT WORKING?)
-        // this.spawnTimer = this.time.addEvent({
-        //     delay: 500,
-        //     callback: callback,
-        //     loop: true,
-        // });
         this.spawnTimer = 0;
         
         //get input
@@ -163,14 +138,14 @@ class Play extends Phaser.Scene {
 
         let menuConfig = {
             fontFamily: 'Trebuchet MS',
-            fontSize: '28px',
+            fontSize: '14px',
             backgroundColor: '#816271',
             color: '#c3a38a',
             align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
+            // padding: {
+            //     top: 5,
+            //     bottom: 5,
+            // },
             fixedWidth: 0
         }
 
@@ -200,26 +175,6 @@ class Play extends Phaser.Scene {
         }
         const grayscalePipeline = this.renderer.pipelines.get('Gray');
         grayscalePipeline.gray = this.temp;
-        // this.temp += 0.05 * multiplier;
-        // console.log(this.enemy_list); 
-        
-        //for list of enemies
-        //if element.active = false, remove that element
-        //else update it
-        //collision detection per element
-
-        let menuConfig = {
-            fontFamily: 'Trebuchet MS',
-            fontSize: '28px',
-            backgroundColor: '#816271',
-            color: '#c3a38a',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
 
         this.lives_UI.text = `LIVES: ${this.player.lives}`;
         if (this.player.lives < 0) {
