@@ -177,7 +177,7 @@ class Play extends Phaser.Scene {
 
         //UI Elements
         this.waveIncrease = false;
-        this.wave = 0;  //wave number
+        this.wave = 1;  //wave number
         this.nextWave_UI = this.add.text(game.config.width/2, game.config.height/2, `WAVE ${this.wave}`, menuConfig).setOrigin(0.5);
         this.nextWave_UI.setVisible(false);
 
@@ -228,22 +228,18 @@ class Play extends Phaser.Scene {
 
         if (this.temp > this.maxDistance) {
             this.wave += 1;
-            this.waveIncrease = true;
-            // multiplier = 0;
-            // this.nextWave_UI.setVisible(true); //set visible
-            // this.time.delayedCall(1000, () => { //after 1 second delay,  set invisible
-            //     // console.log("HERE");
-            //     this.nextWave_UI.text = `WAVE ${this.wave}`;
-            //     this.nextWave_UI.setVisible(false);
-            //     multiplier = 0;
-            //     this.temp = 0;
-            // }, null, this);
+            this.maxDistance += 50; //increase next wave max distance
+            this.enemy_list.forEach(enemy => { //destroy all enemies on waveIncrease.
+                enemy.destroy();
+            });
+            this.waveIncrease = true; //increase wave
         } else {
             this.player.update(); //player update (controls movement)
             //spawn enemies
             this.spawnTimer += 1; //spawnTimer.
-            // console.log(this.spawnTimer);
-            if (this.spawnTimer > 100) { //every few time spawn
+            // 100/this.wave
+            // Math.min(100/this.wave, 10)
+            if (this.spawnTimer > Math.max(200/this.wave, 10) && !this.waveIncrease) { //every few time spawn
                 // this.enemy_list.push(new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
                 this.enemy_list.push(new SpaceEye(this, game.config.width * Math.random(), game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
                 this.spawnTimer = 0; //reset spawnTimer.
