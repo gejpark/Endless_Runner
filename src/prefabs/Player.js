@@ -108,7 +108,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     onCollision(other) {
         if (this.active && other.active) {
-            if (other.alpha > 0.85) {
+            if (other.alpha > 0.9) {
                 if (this.jumping && other.UP_OR_DOWN < 0) {
                     this.lives -= 1;
                     other.destroy();
