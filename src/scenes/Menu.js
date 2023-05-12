@@ -107,6 +107,8 @@ class Menu extends Phaser.Scene {
             this.sound.play('sfx_select');
             if (this.selected == 0) {
                 this.scene.start('playScene');
+            } else if (this.selected == 1) {
+                this.scene.start('instructionsScene');
             }
         }
     }

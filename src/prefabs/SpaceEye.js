@@ -24,6 +24,10 @@ class SpaceEye extends Phaser.Physics.Arcade.Sprite {
 
     }
 
+    setScaler(scaler=1) {
+        this.setScale(scaler);
+    }
+
     movement(multiplier=1) {
         if (this.active) { //while active
             this.body.setVelocityY(this.VELOCITY * multiplier * this.UP_OR_DOWN);
