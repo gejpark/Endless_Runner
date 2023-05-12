@@ -240,7 +240,7 @@ class Play extends Phaser.Scene {
         }
 
         if(!this.GAME_OVER) { //if not game over.
-            if (this.temp > this.maxDistance) {
+            if (this.temp > this.maxDistance) { //if passed over this wave's distance
                 this.wave += 1;
                 this.maxDistance += 50; //increase next wave max distance
                 this.enemy_list.forEach(enemy => { //destroy all enemies on waveIncrease.
