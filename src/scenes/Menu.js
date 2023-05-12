@@ -51,7 +51,7 @@ class Menu extends Phaser.Scene {
             fontFamily: 'Trebuchet MS',
             fontSize: '14px',
             // backgroundColor: '#816271',
-            color: '#c3a38a',
+            color: '#FFF1E8',
             align: 'right',
             // padding: {
             //     top: 5,
@@ -87,14 +87,14 @@ class Menu extends Phaser.Scene {
         }
 
         if(this.selected == 0) {
-            this.playButton.setBackgroundColor('#816271'); //fill in color for selected button
+            this.playButton.setBackgroundColor('#83769C'); //fill in color for selected button
             //deselect everything else.
             this.instructionButton.setBackgroundColor('rgba(0,0,0,0)');
             if (Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
                 this.scene.start('playScene');
             }
         } else if (this.selected == 1) {
-            this.instructionButton.setBackgroundColor('#816271');
+            this.instructionButton.setBackgroundColor('#83769C');
             this.playButton.setBackgroundColor('rgba(0,0,0,0)');
         }
     }

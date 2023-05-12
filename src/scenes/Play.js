@@ -139,8 +139,9 @@ class Play extends Phaser.Scene {
         let menuConfig = {
             fontFamily: 'Trebuchet MS',
             fontSize: '14px',
-            backgroundColor: '#816271',
-            color: '#c3a38a',
+            // backgroundColor: '#816271',
+            // color: '#c3a38a',
+            color: '#FFF1E8',
             align: 'right',
             // padding: {
             //     top: 5,
@@ -164,6 +165,24 @@ class Play extends Phaser.Scene {
 
         this.score = 0;
         this.score_UI = this.add.text(120, 0, `SCORE ${this.score}`, menuConfig);
+
+        let gameOverTextConfig = {
+            fontFamily: 'Trebuchet MS',
+            fontSize: '14px',
+            // backgroundColor: '#816271',
+            // color: '#c3a38a',
+            color: '#FFF1E8',
+            align: 'right',
+            // padding: {
+            //     top: 5,
+            //     bottom: 5,
+            // },
+            fixedWidth: 0
+        }
+        this.SELECT = 0;
+        this.GAME_OVER_TEXT = this.add.text(game.config.width/2, game.config.height/2, `GAME OVER`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
+        this.RESTART_TEXT = this.add.text(game.config.width/4, 3*(game.config.height/4), `RESTART`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
+        this.MENU_TEXT = this.add.text(3*(game.config.width/4), 3*(game.config.height/4), `MENU`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
     }
 
     update() {
@@ -176,9 +195,32 @@ class Play extends Phaser.Scene {
         const grayscalePipeline = this.renderer.pipelines.get('Gray');
         grayscalePipeline.gray = this.temp;
 
-        this.lives_UI.text = `LIVES: ${this.player.lives}`;
-        if (this.player.lives < 0) {
-            this.scene.start('menuScene');
+        this.lives_UI.text = `LIVES: ${this.player.lives}`; //player lives
+        if (this.player.lives < 0) { //gameover screen
+            multiplier = 0;
+            this.GAME_OVER_TEXT.setVisible(true);
+            this.MENU_TEXT.setVisible(true);
+            this.RESTART_TEXT.setVisible(true);
+            if(Phaser.Input.Keyboard.JustDown(KEY_LEFT)) {
+                // this.scene.start('playScene');
+                this.SELECT = 1;
+                this.RESTART_TEXT.setBackgroundColor('#83769C'); //fill in color for selected button
+                this.MENU_TEXT.setBackgroundColor('rgba(0,0,0,0)'); //fill in color for UN selected button
+            }
+            if(Phaser.Input.Keyboard.JustDown(KEY_RIGHT)) {
+                // this.scene.start('menuScene');
+                this.SELECT = 2;
+                this.MENU_TEXT.setBackgroundColor('#83769C'); //fill in color for selected button
+                this.RESTART_TEXT.setBackgroundColor('rgba(0,0,0,0)'); //fill in color for UN selected button
+            }
+            if(Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
+                if(this.SELECT == 1) {
+                    this.scene.start('playScene');
+                }
+                if(this.SELECT == 2) {
+                    this.scene.start('menuScene');
+                }
+            }
         }
 
         if (this.temp > this.maxDistance) {
