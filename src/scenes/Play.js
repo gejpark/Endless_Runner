@@ -176,15 +176,19 @@ class Play extends Phaser.Scene {
 
 
         //UI Elements
-        this.nextWave_UI = this.add.text(game.config.width/2, game.config.height/2, 'NEXT WAVE', menuConfig).setOrigin(0.5);
+        this.waveIncrease = false;
+        this.wave = 0;  //wave number
+        this.nextWave_UI = this.add.text(game.config.width/2, game.config.height/2, `WAVE ${this.wave}`, menuConfig).setOrigin(0.5);
         this.nextWave_UI.setVisible(false);
 
+        this.maxDistance = 50; //increase every time.
         this.distance_UI = this.add.text(game.config.width/2, 14+2.5, `DISTANCE: ${Math.round(this.temp)}`, menuConfig).setOrigin(0.5);
 
         this.lives = 3;
         this.lives_UI = this.add.text(0, 0, `LIVES: ${this.lives}`, menuConfig).setOrigin(0.0);
 
-        this.score_UI = this.add.text(120, 0, 'SCORE', menuConfig);
+        this.score = 0;
+        this.score_UI = this.add.text(120, 0, `SCORE ${this.score}`, menuConfig);
     }
 
     update() {
@@ -238,16 +242,37 @@ class Play extends Phaser.Scene {
             this.scene.start('menuScene');
         }
 
-        if (this.temp > 50) {
+        if (this.temp > this.maxDistance) {
+            this.wave += 1;
+            this.waveIncrease = true;
+            // multiplier = 0;
+            // this.nextWave_UI.setVisible(true); //set visible
+            // this.time.delayedCall(1000, () => { //after 1 second delay,  set invisible
+            //     // console.log("HERE");
+            //     this.nextWave_UI.text = `WAVE ${this.wave}`;
+            //     this.nextWave_UI.setVisible(false);
+            //     multiplier = 0;
+            //     this.temp = 0;
+            // }, null, this);
+        } else {
+            this.temp += 0.05 * multiplier;
+            console.log(multiplier);
+            this.score += multiplier;
+            this.score_UI.text = `SCORE: ${Math.round(this.score)}`;
+            this.distance_UI.text = `DISTANCE: ${Math.round(this.maxDistance - this.temp)}`;
+        }
+
+        if (this.waveIncrease) {
+            this.temp = 0;
+            multiplier = 0;
             this.nextWave_UI.setVisible(true); //set visible
             this.time.delayedCall(1000, () => { //after 1 second delay,  set invisible
                 // console.log("HERE");
+                this.nextWave_UI.text = `WAVE ${this.wave}`;
                 this.nextWave_UI.setVisible(false);
-                this.temp = 0;
-                }, null, this);
-        } else {
-            this.temp += 0.05 * multiplier;
-            this.distance_UI.text = `DISTANCE: ${Math.round(this.temp)}`;
+                multiplier = 0;
+                this.waveIncrease = false;
+            }, null, this);
         }
     }
 }
