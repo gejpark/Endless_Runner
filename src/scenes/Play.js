@@ -201,22 +201,6 @@ class Play extends Phaser.Scene {
         const grayscalePipeline = this.renderer.pipelines.get('Gray');
         grayscalePipeline.gray = this.temp;
         // this.temp += 0.05 * multiplier;
-        
-        this.player.update(); //player update (controls movement)
-
-        //spawn enemies
-        this.spawnTimer += 1; //spawnTimer.
-        // console.log(this.spawnTimer);
-        if (this.spawnTimer > 100) { //every few time spawn
-            // this.enemy_list.push(new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
-            this.enemy_list.push(new SpaceEye(this, game.config.width * Math.random(), game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
-            this.spawnTimer = 0; //reset spawnTimer.
-        }
-        this.enemy_list = this.enemy_list.filter(enemy => enemy.active == true); //remove inactive enemies
-        this.enemy_list.forEach(enemy => {
-            enemy.movement(multiplier); //apply movement to enemy
-            this.player.detectOverlap(enemy); //detect collision from player to enemies. for each enemy
-        });
         // console.log(this.enemy_list); 
         
         //for list of enemies
@@ -255,8 +239,24 @@ class Play extends Phaser.Scene {
             //     this.temp = 0;
             // }, null, this);
         } else {
+            this.player.update(); //player update (controls movement)
+            //spawn enemies
+            this.spawnTimer += 1; //spawnTimer.
+            // console.log(this.spawnTimer);
+            if (this.spawnTimer > 100) { //every few time spawn
+                // this.enemy_list.push(new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
+                this.enemy_list.push(new SpaceEye(this, game.config.width * Math.random(), game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
+                this.spawnTimer = 0; //reset spawnTimer.
+            }
+            this.enemy_list = this.enemy_list.filter(enemy => enemy.active == true); //remove inactive enemies
+            this.enemy_list.forEach(enemy => {
+                enemy.movement(multiplier); //apply movement to enemy
+                this.player.detectOverlap(enemy); //detect collision from player to enemies. for each enemy
+            });
+
+            
             this.temp += 0.05 * multiplier;
-            console.log(multiplier);
+            // console.log(multiplier);
             this.score += multiplier;
             this.score_UI.text = `SCORE: ${Math.round(this.score)}`;
             this.distance_UI.text = `DISTANCE: ${Math.round(this.maxDistance - this.temp)}`;
