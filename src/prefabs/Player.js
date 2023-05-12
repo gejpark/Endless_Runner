@@ -71,7 +71,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(!this.jumpApex) { //if not jumpApex
             // console.log("HERE");
             if (KEY_SPACE.isDown && !this.jumping) {
-                
+                this.scene.sound.play('sfx_jump');
                 this.body.setVelocityY(-this.VELOCITY);
                 this.jumping = true;
             }
@@ -111,11 +111,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (other.alpha > 0.9) {
                 if (this.jumping && other.UP_OR_DOWN < 0) {
                     this.lives -= 1;
-                    other.destroy();
+                    other.selfDestroy();
                 }
                 if (!this.jumping) {
                     this.lives -= 1;
-                    other.destroy();
+                    other.selfDestroy();
                 }
             }
         }

@@ -40,7 +40,7 @@ class Shot extends Phaser.Physics.Arcade.Sprite {
     onCollision(other) {
         if (this.active) {
             if(other.active) {
-                other.destroy();
+                other.selfDestroy();
             }
             this.destroy();
         }

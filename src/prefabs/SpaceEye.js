@@ -70,6 +70,9 @@ class SpaceEye extends Phaser.Physics.Arcade.Sprite {
     // }
 
     selfDestroy() { //destroy self
-        this.destroy();
+        if(this.active) {
+            this.scene.sound.play('sfx_explosion');
+            this.destroy();
+        }
     }
 }

@@ -218,22 +218,24 @@ class Play extends Phaser.Scene {
             this.MENU_TEXT.setVisible(true);
             this.RESTART_TEXT.setVisible(true);
             if(Phaser.Input.Keyboard.JustDown(KEY_LEFT)) {
-                // this.scene.start('playScene');
+                this.sound.play('sfx_select');
                 this.SELECT = 1;
                 this.RESTART_TEXT.setBackgroundColor('#83769C'); //fill in color for selected button
                 this.MENU_TEXT.setBackgroundColor('rgba(0,0,0,0)'); //fill in color for UN selected button
             }
             if(Phaser.Input.Keyboard.JustDown(KEY_RIGHT)) {
-                // this.scene.start('menuScene');
+                this.sound.play('sfx_select');
                 this.SELECT = 2;
                 this.MENU_TEXT.setBackgroundColor('#83769C'); //fill in color for selected button
                 this.RESTART_TEXT.setBackgroundColor('rgba(0,0,0,0)'); //fill in color for UN selected button
             }
             if(Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
                 if(this.SELECT == 1) {
+                    this.sound.play('sfx_select');
                     this.scene.start('playScene');
                 }
                 if(this.SELECT == 2) {
+                    this.sound.play('sfx_select');
                     this.scene.start('menuScene');
                 }
             }
@@ -272,6 +274,7 @@ class Play extends Phaser.Scene {
 
                 if(KEY_Z.isDown && this.projectile_timer > Math.max(200/this.wave, 10)) {
                     this.projectile_list.push(new Shot(this, this.player.x, this.player.y - this.player.height/2, 'Shot').setOrigin(0.5).setDepth(this.player.depth - 1));
+                    this.sound.play('sfx_shot');
                     this.projectile_timer = 0;
                 }
                 this.projectile_list.forEach(projectile => {

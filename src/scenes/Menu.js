@@ -13,6 +13,12 @@ class Menu extends Phaser.Scene {
         this.load.spritesheet('menu_background_animated', './assets/Sprites/menu_background.png', {frameWidth: 640, frameHeight: 480, startFrame: 0, endFrame: 5});
         //load revolving spaceship spritesheet
         this.load.spritesheet('spaceship_revolve','./assets/Sprites/spaceship3-Sheet.png', {frameWidth: 90, frameHeight: 70, startFrame: 0, endFrame: 179});
+
+        //sounds
+        this.load.audio('sfx_explosion', './assets/Sound/explosion.wav');
+        this.load.audio('sfx_shot', './assets/Sound/laserShoot.wav');
+        this.load.audio('sfx_select', './assets/Sound/blipSelect.wav');
+        this.load.audio('sfx_jump', './assets/Sound/jump.wav');
     }
 
     create() {
@@ -75,10 +81,12 @@ class Menu extends Phaser.Scene {
         //     this.scene.start('playScene');
         // }
         if(Phaser.Input.Keyboard.JustDown(KEY_DOWN)) {
+            this.sound.play('sfx_select');
             this.selected += 1;
             this.selected = this.selected % 2;
         }
         if(Phaser.Input.Keyboard.JustDown(KEY_UP)) {
+            this.sound.play('sfx_select');
             if(this.selected == 0) {
                 this.selected = 1;
             } else {
@@ -91,12 +99,15 @@ class Menu extends Phaser.Scene {
             this.playButton.setBackgroundColor('#83769C'); //fill in color for selected button
             //deselect everything else.
             this.instructionButton.setBackgroundColor('rgba(0,0,0,0)');
-            if (Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
-                this.scene.start('playScene');
-            }
         } else if (this.selected == 1) {
             this.instructionButton.setBackgroundColor('#83769C');
             this.playButton.setBackgroundColor('rgba(0,0,0,0)');
+        }
+        if (Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
+            this.sound.play('sfx_select');
+            if (this.selected == 0) {
+                this.scene.start('playScene');
+            }
         }
     }
 }
