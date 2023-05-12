@@ -1,26 +1,19 @@
 /**
  * NAME: Gene Park
- * TITLE: ???
- * HOURS SPENT: ???
- * CREATIVE TILT JUSTIFICATION: ???
+ * TITLE: ENDLESS RETURN
+ * HOURS SPENT: 30
+ * CREATIVE TILT JUSTIFICATION: 
+ *          1. Used shaders for the background to simulate scrolling background. This required learning how Phaser 3's shader pipeline worked. It was quite a hassle. After learning how it worked, I got fragment shader code from the internet and translated + modified it so that it would work in Phaser 3. Citations below. (5)
+ *          2. For the model of the spaceship, I wanted to use a new tool PICOCAD. While this allowed me to create a revolving gif of the spaceship, translating that into usable sprites was very difficult. Additionally, all art assets (except the shader background) use the PICO-8 color palette. (5)
  */
 //CITATIONS:
 //Shader for Play scene background: https://www.shadertoy.com/view/dlt3zs
+//Music: https://pixabay.com/music/corporate-space-technologies-146694/
+//PICOCAD: https://johanpeitz.itch.io/picocad
+//PICO-8 Color Palette: https://lospec.com/palette-list/pico-8
+//ASEPRITE: https://www.aseprite.org/
+//SOUND EFFECTS FROM SFXR: https://sfxr.me/
 
-// const contextCreationConfig = {
-//     alpha: false,
-//     depth: false,
-//     antialias: true,
-//     premultipliedAlpha: true,
-//     stencil: true,
-//     preserveDrawingBuffer: false,
-//     failIfMajorPerformanceCaveat: false,
-//     powerPreference: 'default'
-// };
-
-
-// const myCustomCanvas = document.createElement('canvas');
-// const myCustomContext = myCustomCanvas.getContext('webgl2', contextCreationConfig);
 let config = {
     type: Phaser.WEBGL, //Phaser.CANVAS => webgl isn't pixel perfect when rendering for some reason
     width: 640,
