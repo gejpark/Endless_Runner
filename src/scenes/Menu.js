@@ -19,6 +19,7 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_shot', './assets/Sound/laserShoot.wav');
         this.load.audio('sfx_select', './assets/Sound/blipSelect.wav');
         this.load.audio('sfx_jump', './assets/Sound/jump.wav');
+        this.load.audio('play_music', './assets/Sound/space-technologies-146694.mp3'); //music from: https://pixabay.com/music/corporate-space-technologies-146694/
     }
 
     create() {

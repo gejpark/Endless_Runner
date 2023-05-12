@@ -115,6 +115,15 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //add music
+        if (this.playMusic == null) {
+            this.playMusic = this.sound.add('play_music');
+            this.playMusic.setVolume(1);
+            this.playMusic.setLoop(true);
+        }
+        this.playMusic.play(); //play the music
+
+        //Shader stuff
         if (!this.test) {
             this.test = new GrayScalePipeline(this.game);
         }
@@ -230,6 +239,7 @@ class Play extends Phaser.Scene {
                 this.RESTART_TEXT.setBackgroundColor('rgba(0,0,0,0)'); //fill in color for UN selected button
             }
             if(Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
+                this.playMusic.stop(); //play the music
                 if(this.SELECT == 1) {
                     this.sound.play('sfx_select');
                     this.scene.start('playScene');
