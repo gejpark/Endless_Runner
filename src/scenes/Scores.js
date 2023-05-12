@@ -24,18 +24,18 @@ class Scores extends Phaser.Scene {
 
         //show scores
         this.score_list = [];
-        this.intro = this.add.text(game.config.width/2,0, `SCORES: (PRESS Z TO RETURN TO MENU)`,menuConfig).setOrigin(0.5,0);
+        this.intro = this.add.text(game.config.width/2,0, `SCORES: (PRESS SPACE TO RETURN TO MENU)`,menuConfig).setOrigin(0.5,0);
         var temp = 1;
         SCORES.forEach(score => {
             this.add.text(0,this.intro.height * temp, `${temp}. ${score}`,menuConfig).setOrigin(0,0);
             temp += 1;
         });
 
-        KEY_Z = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        KEY_SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
-        if(KEY_Z.isDown) {
+        if(KEY_SPACE.isDown) {
             this.sound.play('sfx_select');
             this.scene.start('menuScene');
         }

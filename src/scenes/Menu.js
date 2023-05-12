@@ -72,6 +72,8 @@ class Menu extends Phaser.Scene {
         this.scoresButton = this.add.text(game.config.width/2, game.config.height - (14) - 100, 'SCORES', menuConfig).setOrigin(0.5, 0);
         this.instructionButton = this.add.text(game.config.width/2, game.config.height - (14)*2 - 100, 'INSTRUCTIONS', menuConfig).setOrigin(0.5, 0);
         this.playButton = this.add.text(game.config.width/2, game.config.height - (14)*3 - 100 , 'PLAY', menuConfig).setOrigin(0.5, 0);
+
+        this.add.text(game.config.width/2, game.config.height - 14, '[SELECT WITH SPACE]', menuConfig).setOrigin(0.5, 0);
         
 
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);

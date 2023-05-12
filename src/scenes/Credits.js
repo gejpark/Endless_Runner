@@ -21,7 +21,7 @@ class Credits extends Phaser.Scene {
             fixedWidth: 0
         }
         var temp = 1;
-        this.intro = this.add.text(game.config.width/2, 0, `CREDITS: (PRESS Z TO RETURN TO MENU)`,menuConfig).setOrigin(0.5,0);
+        this.intro = this.add.text(game.config.width/2, 0, `CREDITS: (PRESS SPACE TO RETURN TO MENU)`,menuConfig).setOrigin(0.5,0);
         temp += 1;
         this.add.text(game.config.width/2,this.intro.height * temp, `PROGRAMMING DONE BY GENE PARK`,menuConfig).setOrigin(0.5,0);
         temp += 1;
@@ -30,7 +30,7 @@ class Credits extends Phaser.Scene {
         this.add.text(game.config.width/2,this.intro.height * temp, `SOUND EFFECTS FROM SFXR: https://sfxr.me/`,menuConfig).setOrigin(0.5,0);
         temp += 1;
         this.add.text(game.config.width/2,this.intro.height * temp, `MUSIC FROM: https://pixabay.com/music/corporate-space-technologies-146694/`,menuConfig).setOrigin(0.5,0);
-        KEY_Z = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        
     
         this.spaceship_revolve_base = this.add.sprite(game.config.width/2,game.config.height/2,'spaceship_revolve_base').setOrigin(0.5,0.5);
         if (!this.anims.exists('spaceship_revolve')) { //check if animation already exists
@@ -43,10 +43,12 @@ class Credits extends Phaser.Scene {
         }
         this.spaceship_revolve_base.anims.play('spaceship_revolve', true);
         this.spaceship_revolve_base.setScale(3);
+
+        KEY_SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update() {
-        if(KEY_Z.isDown) {
+        if(KEY_SPACE.isDown) {
             this.sound.play('sfx_select');
             this.scene.start('menuScene');
         }
