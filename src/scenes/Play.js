@@ -179,6 +179,7 @@ class Play extends Phaser.Scene {
             // },
             fixedWidth: 0
         }
+        this.GAME_OVER = false;
         this.SELECT = 0;
         this.GAME_OVER_TEXT = this.add.text(game.config.width/2, game.config.height/2, `GAME OVER`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
         this.RESTART_TEXT = this.add.text(game.config.width/4, 3*(game.config.height/4), `RESTART`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
@@ -197,6 +198,7 @@ class Play extends Phaser.Scene {
 
         this.lives_UI.text = `LIVES: ${this.player.lives}`; //player lives
         if (this.player.lives < 0) { //gameover screen
+            this.GAME_OVER = true;
             multiplier = 0;
             this.GAME_OVER_TEXT.setVisible(true);
             this.MENU_TEXT.setVisible(true);
@@ -223,49 +225,51 @@ class Play extends Phaser.Scene {
             }
         }
 
-        if (this.temp > this.maxDistance) {
-            this.wave += 1;
-            this.maxDistance += 50; //increase next wave max distance
-            this.enemy_list.forEach(enemy => { //destroy all enemies on waveIncrease.
-                enemy.destroy();
-            });
-            this.waveIncrease = true; //increase wave
-        } else {
-            this.player.update(); //player update (controls movement)
-            //spawn enemies
-            this.spawnTimer += 1; //spawnTimer.
-            // 100/this.wave
-            // Math.min(100/this.wave, 10)
-            if (this.spawnTimer > Math.max(200/this.wave, 10) && !this.waveIncrease) { //every few time spawn
-                // this.enemy_list.push(new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
-                this.enemy_list.push(new SpaceEye(this, game.config.width * Math.random(), game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
-                this.spawnTimer = 0; //reset spawnTimer.
+        if(!this.GAME_OVER) {
+            if (this.temp > this.maxDistance) {
+                this.wave += 1;
+                this.maxDistance += 50; //increase next wave max distance
+                this.enemy_list.forEach(enemy => { //destroy all enemies on waveIncrease.
+                    enemy.destroy();
+                });
+                this.waveIncrease = true; //increase wave
+            } else {
+                this.player.update(); //player update (controls movement)
+                //spawn enemies
+                this.spawnTimer += 1; //spawnTimer.
+                // 100/this.wave
+                // Math.min(100/this.wave, 10)
+                if (this.spawnTimer > Math.max(200/this.wave, 10) && !this.waveIncrease) { //every few time spawn
+                    // this.enemy_list.push(new SpaceEye(this, game.config.width/2, game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
+                    this.enemy_list.push(new SpaceEye(this, game.config.width * Math.random(), game.config.height/2, 'SpaceEye').setOrigin(0.5,0.5)); //instantiate and add to list
+                    this.spawnTimer = 0; //reset spawnTimer.
+                }
+                this.enemy_list = this.enemy_list.filter(enemy => enemy.active == true); //remove inactive enemies
+                this.enemy_list.forEach(enemy => {
+                    enemy.movement(multiplier); //apply movement to enemy
+                    this.player.detectOverlap(enemy); //detect collision from player to enemies. for each enemy
+                });
+
+                
+                this.temp += 0.05 * multiplier;
+                // console.log(multiplier);
+                this.score += multiplier;
+                this.score_UI.text = `SCORE: ${Math.round(this.score)}`;
+                this.distance_UI.text = `DISTANCE: ${Math.round(this.maxDistance - this.temp)}`;
             }
-            this.enemy_list = this.enemy_list.filter(enemy => enemy.active == true); //remove inactive enemies
-            this.enemy_list.forEach(enemy => {
-                enemy.movement(multiplier); //apply movement to enemy
-                this.player.detectOverlap(enemy); //detect collision from player to enemies. for each enemy
-            });
 
-            
-            this.temp += 0.05 * multiplier;
-            // console.log(multiplier);
-            this.score += multiplier;
-            this.score_UI.text = `SCORE: ${Math.round(this.score)}`;
-            this.distance_UI.text = `DISTANCE: ${Math.round(this.maxDistance - this.temp)}`;
-        }
-
-        if (this.waveIncrease) {
-            this.temp = 0;
-            multiplier = 0;
-            this.nextWave_UI.setVisible(true); //set visible
-            this.time.delayedCall(1000, () => { //after 1 second delay,  set invisible
-                // console.log("HERE");
-                this.nextWave_UI.text = `WAVE ${this.wave}`;
-                this.nextWave_UI.setVisible(false);
+            if (this.waveIncrease) {
+                this.temp = 0;
                 multiplier = 0;
-                this.waveIncrease = false;
-            }, null, this);
+                this.nextWave_UI.setVisible(true); //set visible
+                this.time.delayedCall(1000, () => { //after 1 second delay,  set invisible
+                    // console.log("HERE");
+                    this.nextWave_UI.text = `WAVE ${this.wave}`;
+                    this.nextWave_UI.setVisible(false);
+                    multiplier = 0;
+                    this.waveIncrease = false;
+                }, null, this);
+            }
         }
     }
 }
