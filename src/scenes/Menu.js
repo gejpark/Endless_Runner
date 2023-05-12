@@ -23,6 +23,7 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
+        this.options = 3;
         this.selected = 0;
 
         //create spaceship revolving animation.
@@ -66,8 +67,11 @@ class Menu extends Phaser.Scene {
             // },
             fixedWidth: 0
         }
-        this.playButton = this.add.text(game.config.width/2, game.config.height - (14)*3 - 100 , 'PLAY', menuConfig).setOrigin(0.5, 0);
+        
+        this.scoresButton = this.add.text(game.config.width/2, game.config.height - (14) - 100, 'SCORES', menuConfig).setOrigin(0.5, 0);
         this.instructionButton = this.add.text(game.config.width/2, game.config.height - (14)*2 - 100, 'INSTRUCTIONS', menuConfig).setOrigin(0.5, 0);
+        this.playButton = this.add.text(game.config.width/2, game.config.height - (14)*3 - 100 , 'PLAY', menuConfig).setOrigin(0.5, 0);
+        
 
         KEY_LEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         KEY_RIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -84,25 +88,30 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(KEY_DOWN)) {
             this.sound.play('sfx_select');
             this.selected += 1;
-            this.selected = this.selected % 2;
+            this.selected = this.selected % this.options;
         }
         if(Phaser.Input.Keyboard.JustDown(KEY_UP)) {
             this.sound.play('sfx_select');
             if(this.selected == 0) {
-                this.selected = 1;
+                this.selected = 2;
             } else {
                 this.selected -= 1;
             }
-            this.selected = this.selected % 2;
+            this.selected = this.selected % this.options;
         }
 
         if(this.selected == 0) {
             this.playButton.setBackgroundColor('#83769C'); //fill in color for selected button
-            //deselect everything else.
-            this.instructionButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.instructionButton.setBackgroundColor('rgba(0,0,0,0)'); //deselect everything else.
+            this.scoresButton.setBackgroundColor('rgba(0,0,0,0)');
         } else if (this.selected == 1) {
             this.instructionButton.setBackgroundColor('#83769C');
             this.playButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.scoresButton.setBackgroundColor('rgba(0,0,0,0)');
+        } else if (this.selected == 2) {
+            this.instructionButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.playButton.setBackgroundColor('rgba(0,0,0,0)');
+            this.scoresButton.setBackgroundColor('#83769C');
         }
         if (Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
             this.sound.play('sfx_select');
@@ -110,6 +119,8 @@ class Menu extends Phaser.Scene {
                 this.scene.start('playScene');
             } else if (this.selected == 1) {
                 this.scene.start('instructionsScene');
+            } else if (this.selected == 2) {
+                this.scene.start('scoresScene');
             }
         }
     }

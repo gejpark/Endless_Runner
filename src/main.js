@@ -25,7 +25,7 @@ let config = {
     type: Phaser.WEBGL, //Phaser.CANVAS => webgl isn't pixel perfect when rendering for some reason
     width: 640,
     height: 480,
-    scene: [Menu, Play, Instructions],
+    scene: [Menu, Play, Instructions, Scores],
     // canvas: myCustomCanvas,
     // context: myCustomContext,
     transparent: true, //activate transparency
@@ -44,6 +44,7 @@ let config = {
 let game = new Phaser.Game(config);
 // reserve keyboard vars
 let KEY_SPACE, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_Z;
+let SCORES = [];
 // Set UI sizes
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;

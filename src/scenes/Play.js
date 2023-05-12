@@ -240,6 +240,9 @@ class Play extends Phaser.Scene {
             }
             if(Phaser.Input.Keyboard.JustDown(KEY_SPACE)) {
                 this.playMusic.stop(); //play the music
+                SCORES.push(Math.round(this.score));
+                SCORES.sort(function(a, b){return b-a});
+                // console.log(SCORES);
                 if(this.SELECT == 1) {
                     this.sound.play('sfx_select');
                     this.scene.start('playScene');
