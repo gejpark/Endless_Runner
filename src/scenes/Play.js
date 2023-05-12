@@ -102,6 +102,9 @@ class Play extends Phaser.Scene {
         
         // this.load.image('scrolling_tile', './assets/Sprites/scrolling_tile.png');
 
+        //load projectile
+        this.load.image('Shot', './assets/Sprites/shot.png');
+
         //load player stuff
         this.load.image('player_base_sprite', './assets/Sprites/player_base_sprite.png');       //base sprite should have same dimesions as frameWidth + frameHeight
         this.load.spritesheet('spaceship_forward','./assets/Sprites/spaceship_forward1.png', {frameWidth: 96, frameHeight: 80, startFrame: 0, endFrame: 2});
@@ -124,6 +127,7 @@ class Play extends Phaser.Scene {
         //Instantiate player
         this.player = new Player(this, 0, 0, 'player_base_sprite').setOrigin(0.5,0.5);
         this.player.create();
+        this.background1.setDepth(this.player.depth - 2);
 
         //enemies
         this.enemy_list = [];
@@ -135,6 +139,7 @@ class Play extends Phaser.Scene {
         KEY_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP); //press up to speed up
         KEY_DOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN); //press down to speed down
         KEY_SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        KEY_Z = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         let menuConfig = {
             fontFamily: 'Trebuchet MS',
@@ -166,6 +171,11 @@ class Play extends Phaser.Scene {
         this.score = 0;
         this.score_UI = this.add.text(120, 0, `SCORE ${this.score}`, menuConfig);
 
+        this.shotReady = false;
+        this.shot_ready_UI = this.add.text(0, 0, `SHOT READY!`, menuConfig).setOrigin(0.5);
+        this.shot_ready_UI.setVisible(false);
+
+        //Game over screen
         let gameOverTextConfig = {
             fontFamily: 'Trebuchet MS',
             fontSize: '14px',
@@ -184,6 +194,10 @@ class Play extends Phaser.Scene {
         this.GAME_OVER_TEXT = this.add.text(game.config.width/2, game.config.height/2, `GAME OVER`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
         this.RESTART_TEXT = this.add.text(game.config.width/4, 3*(game.config.height/4), `RESTART`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
         this.MENU_TEXT = this.add.text(3*(game.config.width/4), 3*(game.config.height/4), `MENU`, gameOverTextConfig).setOrigin(0.5).setVisible(false);
+
+        //projectiles
+        this.projectile_list = [];
+        this.projectile_timer = Math.max(200/this.wave, 10);
     }
 
     update() {
@@ -225,7 +239,7 @@ class Play extends Phaser.Scene {
             }
         }
 
-        if(!this.GAME_OVER) {
+        if(!this.GAME_OVER) { //if not game over.
             if (this.temp > this.maxDistance) {
                 this.wave += 1;
                 this.maxDistance += 50; //increase next wave max distance
@@ -234,7 +248,42 @@ class Play extends Phaser.Scene {
                 });
                 this.waveIncrease = true; //increase wave
             } else {
+                //Spawn Projectiles
+                this.projectile_timer += 1;
+                
+                //announce shot is ready
+                this.shot_ready_UI.x = this.player.x;
+                this.shot_ready_UI.y = this.player.y - this.player.height/2;
+                if(this.projectile_timer > Math.max(200/this.wave, 10) && this.projectile_timer < 50 + Math.max(200/this.wave, 10)) {
+                    this.shot_ready_UI.setVisible(true);
+                } else {
+                    this.shot_ready_UI.setVisible(false);
+                }
+
+                // if (this.shotReady) {
+                //     // this.shot_ready_UI.setVisible(true);
+                //     this.shot_ready_UI.x = this.player.x;
+                //     this.shot_ready_UI.y = this.player.y;
+                //     this.time.delayedCall(0, () => { //after 0.1 second delay,  set invisible
+                //         this.shot_ready_UI.setVisible(false);
+                //         this.shotReady = false;
+                //     }, null, this);
+                // }
+
+                if(KEY_Z.isDown && this.projectile_timer > Math.max(200/this.wave, 10)) {
+                    this.projectile_list.push(new Shot(this, this.player.x, this.player.y - this.player.height/2, 'Shot').setOrigin(0.5).setDepth(this.player.depth - 1));
+                    this.projectile_timer = 0;
+                }
+                this.projectile_list.forEach(projectile => {
+                    // projectile.z = this.player.w + 1;
+                    projectile.fire();
+                    this.enemy_list.forEach(enemy => {
+                        projectile.detectOverlap(enemy);
+                    });
+                });
+
                 this.player.update(); //player update (controls movement)
+                
                 //spawn enemies
                 this.spawnTimer += 1; //spawnTimer.
                 // 100/this.wave
